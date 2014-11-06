@@ -34,6 +34,8 @@ public class Ventana extends javax.swing.JFrame {
            num=num+1;
         }
 
+        
+        //llamar a la carga desde archivo
     }
 
     /**
@@ -46,14 +48,51 @@ public class Ventana extends javax.swing.JFrame {
     private void initComponents() {
 
         panelJuego = new javax.swing.JPanel();
+        panel1 = new java.awt.Panel();
+        label1 = new java.awt.Label();
+        label2 = new java.awt.Label();
+        label3 = new java.awt.Label();
+        btnAgregarPanel = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(null);
+
+        panelJuego.setDoubleBuffered(false);
         getContentPane().add(panelJuego);
-        panelJuego.setBounds(0, 0, 400, 300);
+        panelJuego.setBounds(0, 0, 380, 300);
+
+        label1.setText("label1");
+        panel1.add(label1);
+
+        label2.setText("label2");
+        panel1.add(label2);
+
+        label3.setText("label3");
+        panel1.add(label3);
+
+        getContentPane().add(panel1);
+        panel1.setBounds(400, 150, 180, 130);
+
+        btnAgregarPanel.setText("Agregar Panel");
+        getContentPane().add(btnAgregarPanel);
+        btnAgregarPanel.setBounds(430, 40, 101, 23);
+
+        jToggleButton2.setText("Mover Panel");
+        getContentPane().add(jToggleButton2);
+        jToggleButton2.setBounds(430, 90, 105, 23);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -91,6 +130,12 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnAgregarPanel;
+    private javax.swing.JToggleButton jToggleButton2;
+    private java.awt.Label label1;
+    private java.awt.Label label2;
+    private java.awt.Label label3;
+    private java.awt.Panel panel1;
     private javax.swing.JPanel panelJuego;
     // End of variables declaration//GEN-END:variables
 
@@ -116,6 +161,22 @@ public class Ventana extends javax.swing.JFrame {
         //en fila y columna se reciben las coordenas donde presionó el ususario, relativas al comienzo de la grilla
         //fila 1 y col 1 corresponden a la posicion de arriba a la izquierda
         //debe indicarse como responder al click de ese botón
+        
+        if(this.btnAgregarPanel.isEnabled())
+            if(this.btnAgregarPanel.isSelected()){
+                //Aca la jugada es agregar panel en esta posicion del tablero (fila, columna)
+                
+                this.btnAgregarPanel.setEnabled(false);
+            }
+            else
+            {
+                //aca es poner ficha
+            }
+        else{
+            //me fijo en el mover panel
+            
+            
+        }
     }
 
 }
