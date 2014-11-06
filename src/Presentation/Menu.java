@@ -9,19 +9,20 @@ public class Menu {
 
     private static Scanner teclado = null;
 
-    static Partida partidaAct;
+    private static Partida partidaAct;
     //static boolean panelEsta = false;
-    static boolean turnoBlanco = true;
+    private static boolean turnoBlanco = true;
     //agregada nueva variable para saber si abandono o no
     //static boolean abandono = false;
-    static char partidaTerminada = '-'; //guion significa partida NO terminada
-    static char[][] simetrias;
-    static int fichasDelJugador;
+    private static char partidaTerminada = '-'; //guion significa partida NO terminada
+    private static char[][] simetrias;
+    private static int fichasDelJugador;
 
     public static void main(String[] args) {
 
         teclado = new Scanner(System.in);
         Sistema sistema = new Sistema();
+//        Partida partidaAct = new Partida();
 
         //menu principal - punto de entrada
         String opcion;
