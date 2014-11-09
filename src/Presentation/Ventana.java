@@ -1,41 +1,39 @@
 package Presentation;
 
+import Logic.Jugador;
+import Logic.Partida;
+import Logic.Sistema;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Iterator;
 import javax.swing.*;
 
 public class Ventana extends javax.swing.JFrame {
 
-    private int dimension = 9;
+    //private static Scanner teclado = null;
+
+    private static Partida partidaAct;
+    //static boolean panelEsta = false;
+    private static boolean turnoBlanco = true;
+    //agregada nueva variable para saber si abandono o no
+    //static boolean abandono = false;
+    private static char partidaTerminada = '-'; //guion significa partida NO terminada
+    private static char[][] simetrias;
+    private static int fichasDelJugador;  
+    private static Sistema sistema;
+    
+    //private int dimension = 0;
     private JButton[][] botones;
     private int num = 65;
     public Ventana() {
+        sistema = new Sistema();
+
+        //TODO llamar a la carga desde archivo
+       
         initComponents();
 
-        //crear botones y agregarlos al panel
-        //panelJuego.setLayout(new GridLayout(dimension, dimension));
-        panelJuego.setLayout(new GridLayout(dimension, dimension));
-        botones = new JButton[dimension + 2][dimension + 2];
-        for (int i = 1; i <= dimension; i++) {
-            for (int j = 1; j <= dimension; j++) {
-                JButton jButton = new JButton();
-                jButton.addActionListener(new ListenerBoton(i, j));
-                panelJuego.add(jButton);
-                botones[i][j] = jButton;
-            }
-
-        }
-        botones[1][1].setSize((botones[1][1].getWidth())*2,botones[1][1].getHeight());
-        botones[1][1].setVisible(false);
-        for (int i = 2; i <= dimension; i++) {
-           botones[1][i].setText(""+(i-1));
-           botones[i][1].setText(((char)num)+"");
-           botones[i][1].setSize((botones[i][1].getWidth())*2,botones[i][1].getHeight());
-           num=num+1;
-        }
-
+        setPaneles("Inicio");
         
-        //llamar a la carga desde archivo
     }
 
     /**
@@ -47,15 +45,44 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelMenuJuego = new javax.swing.JPanel();
         panelJuego = new javax.swing.JPanel();
-        panel1 = new java.awt.Panel();
-        label1 = new java.awt.Label();
-        label2 = new java.awt.Label();
-        label3 = new java.awt.Label();
+        btnMoverPanel = new javax.swing.JToggleButton();
         btnAgregarPanel = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        btnAbandonar = new javax.swing.JButton();
+        panelInicio = new javax.swing.JPanel();
+        btnJugar = new javax.swing.JButton();
+        panelJugadores = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtAlias = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtEdad = new javax.swing.JTextField();
+        btnAgregarJugador = new javax.swing.JButton();
+        btnCancelAgregarJugador = new javax.swing.JButton();
+        panelMenuInicioJuego = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cboJugadorBlancas = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        cboTamanioTablero = new javax.swing.JComboBox();
+        cboCantidadFichas = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        cboTamanioPanel = new javax.swing.JComboBox();
+        cboJugadorNegras = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        btnComenzarPartida = new javax.swing.JButton();
+        panelEstadisticas = new javax.swing.JPanel();
+        btnDoneEstadisticas = new javax.swing.JButton();
+        menu = new javax.swing.JMenuBar();
+        menuSettings = new javax.swing.JMenu();
+        menuAgregarJugador = new javax.swing.JMenuItem();
+        menuEstadisticas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 300));
+        setPreferredSize(new java.awt.Dimension(600, 300));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -63,29 +90,233 @@ public class Ventana extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
+        panelMenuJuego.setName("panelMenuJuego"); // NOI18N
+        panelMenuJuego.setPreferredSize(new java.awt.Dimension(600, 300));
+        panelMenuJuego.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelJuego.setBackground(new java.awt.Color(255, 255, 0));
         panelJuego.setDoubleBuffered(false);
-        getContentPane().add(panelJuego);
-        panelJuego.setBounds(0, 0, 380, 300);
+        panelMenuJuego.add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 11, 460, 290));
 
-        label1.setText("label1");
-        panel1.add(label1);
-
-        label2.setText("label2");
-        panel1.add(label2);
-
-        label3.setText("label3");
-        panel1.add(label3);
-
-        getContentPane().add(panel1);
-        panel1.setBounds(400, 150, 180, 130);
+        btnMoverPanel.setText("Mover Panel");
+        panelMenuJuego.add(btnMoverPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 100, -1));
 
         btnAgregarPanel.setText("Agregar Panel");
-        getContentPane().add(btnAgregarPanel);
-        btnAgregarPanel.setBounds(430, 40, 101, 23);
+        panelMenuJuego.add(btnAgregarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, -1, -1));
 
-        jToggleButton2.setText("Mover Panel");
-        getContentPane().add(jToggleButton2);
-        jToggleButton2.setBounds(430, 90, 105, 23);
+        btnAbandonar.setText("Abandonar");
+        btnAbandonar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbandonarActionPerformed(evt);
+            }
+        });
+        panelMenuJuego.add(btnAbandonar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 70, -1, -1));
+
+        getContentPane().add(panelMenuJuego);
+        panelMenuJuego.setBounds(0, 0, 600, 300);
+
+        panelInicio.setPreferredSize(new java.awt.Dimension(600, 300));
+
+        btnJugar.setText("Jugar");
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJugarActionPerformed(evt);
+            }
+        });
+        panelInicio.add(btnJugar);
+
+        getContentPane().add(panelInicio);
+        panelInicio.setBounds(0, 0, 600, 300);
+
+        panelJugadores.setMinimumSize(new java.awt.Dimension(600, 300));
+        panelJugadores.setName(""); // NOI18N
+        panelJugadores.setPreferredSize(new java.awt.Dimension(600, 300));
+        panelJugadores.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setText("Nombre");
+        panelJugadores.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        panelJugadores.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 160, -1));
+
+        jLabel2.setText("Alias");
+        panelJugadores.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        panelJugadores.add(txtAlias, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 160, -1));
+
+        jLabel3.setText("Edad");
+        panelJugadores.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
+        panelJugadores.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, 160, -1));
+
+        btnAgregarJugador.setText("Agregar Jugador");
+        btnAgregarJugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarJugadorActionPerformed(evt);
+            }
+        });
+        panelJugadores.add(btnAgregarJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, -1, -1));
+
+        btnCancelAgregarJugador.setText("Cancelar");
+        btnCancelAgregarJugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelAgregarJugadorActionPerformed(evt);
+            }
+        });
+        panelJugadores.add(btnCancelAgregarJugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, -1, -1));
+
+        getContentPane().add(panelJugadores);
+        panelJugadores.setBounds(0, 0, 600, 300);
+
+        panelMenuInicioJuego.setMinimumSize(new java.awt.Dimension(600, 300));
+        panelMenuInicioJuego.setPreferredSize(new java.awt.Dimension(600, 600));
+
+        jLabel4.setText("Tamaño del tablero:");
+
+        jLabel5.setText("Cantidad de fichas:");
+
+        cboJugadorBlancas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel6.setText("Jugador Blancas");
+
+        cboTamanioTablero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTamanioTablero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboTamanioTableroActionPerformed(evt);
+            }
+        });
+
+        cboCantidadFichas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel7.setText("Tamaño del panel:");
+
+        cboTamanioPanel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cboJugadorNegras.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel8.setText("Jugador Negras");
+
+        btnComenzarPartida.setText("Comenzar Partida");
+        btnComenzarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComenzarPartidaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelMenuInicioJuegoLayout = new javax.swing.GroupLayout(panelMenuInicioJuego);
+        panelMenuInicioJuego.setLayout(panelMenuInicioJuegoLayout);
+        panelMenuInicioJuegoLayout.setHorizontalGroup(
+            panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboTamanioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cboTamanioTablero, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                                        .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cboCantidadFichas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cboJugadorBlancas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cboJugadorNegras, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(btnComenzarPartida)))
+                .addContainerGap(223, Short.MAX_VALUE))
+        );
+        panelMenuInicioJuegoLayout.setVerticalGroup(
+            panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuInicioJuegoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cboTamanioTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(cboTamanioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cboCantidadFichas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelMenuInicioJuegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboJugadorBlancas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(cboJugadorNegras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(48, 48, 48)
+                .addComponent(btnComenzarPartida)
+                .addContainerGap(108, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(panelMenuInicioJuego);
+        panelMenuInicioJuego.setBounds(0, 0, 600, 600);
+
+        panelEstadisticas.setMinimumSize(new java.awt.Dimension(600, 300));
+        panelEstadisticas.setPreferredSize(new java.awt.Dimension(600, 300));
+
+        btnDoneEstadisticas.setText("Volver");
+        btnDoneEstadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoneEstadisticasActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelEstadisticasLayout = new javax.swing.GroupLayout(panelEstadisticas);
+        panelEstadisticas.setLayout(panelEstadisticasLayout);
+        panelEstadisticasLayout.setHorizontalGroup(
+            panelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadisticasLayout.createSequentialGroup()
+                .addContainerGap(527, Short.MAX_VALUE)
+                .addComponent(btnDoneEstadisticas)
+                .addContainerGap())
+        );
+        panelEstadisticasLayout.setVerticalGroup(
+            panelEstadisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadisticasLayout.createSequentialGroup()
+                .addContainerGap(266, Short.MAX_VALUE)
+                .addComponent(btnDoneEstadisticas)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelEstadisticas);
+        panelEstadisticas.setBounds(0, 0, 600, 300);
+
+        menu.setName("menu"); // NOI18N
+
+        menuSettings.setText("Configuración");
+
+        menuAgregarJugador.setText("Agregar Jugador");
+        menuAgregarJugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAgregarJugadorActionPerformed(evt);
+            }
+        });
+        menuSettings.add(menuAgregarJugador);
+
+        menuEstadisticas.setText("Estadisticas");
+        menuEstadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEstadisticasActionPerformed(evt);
+            }
+        });
+        menuSettings.add(menuEstadisticas);
+
+        menu.add(menuSettings);
+
+        setJMenuBar(menu);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -93,6 +324,93 @@ public class Ventana extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void menuAgregarJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAgregarJugadorActionPerformed
+        // TODO add your handling code here:
+        
+        setPaneles("Jugadores");
+
+    }//GEN-LAST:event_menuAgregarJugadorActionPerformed
+
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        
+        //Cargamos los combos del menu de incio de la partida
+        this.cboTamanioTablero.removeAllItems();
+        int num = 4;
+        this.cboTamanioTablero.addItem(num);
+        num = 6;
+        this.cboTamanioTablero.addItem(num);
+        num = 8;
+        this.cboTamanioTablero.addItem(num);
+        
+        
+        this.cboTamanioPanel.removeAllItems();
+        this.cboTamanioPanel.setEnabled(false);
+        
+        this.cboCantidadFichas.removeAllItems();
+        this.cboCantidadFichas.setEnabled(false);
+        
+        this.cboJugadorNegras.setEnabled(false);
+        this.cboJugadorNegras.removeAllItems();
+        
+        this.cboJugadorBlancas.removeAllItems();
+        Iterator it = sistema.getJugadores().iterator();
+        while (it.hasNext()) {
+            Jugador j = (Jugador) it.next();
+            this.cboJugadorBlancas.addItem(j);
+        }        
+        setPaneles("InicioJuego");
+
+    }//GEN-LAST:event_btnJugarActionPerformed
+
+    private void btnAbandonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbandonarActionPerformed
+        // TODO abandonar el juego actual:
+        
+        setPaneles("Inicio");
+        
+    }//GEN-LAST:event_btnAbandonarActionPerformed
+
+    private void btnAgregarJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarJugadorActionPerformed
+        // TODO llamar al sistema parea ingresar el jugador:
+        
+        setPaneles("Inicio");
+    }//GEN-LAST:event_btnAgregarJugadorActionPerformed
+
+    private void btnCancelAgregarJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelAgregarJugadorActionPerformed
+        // TODO add your handling code here:
+        setPaneles("Inicio");
+    }//GEN-LAST:event_btnCancelAgregarJugadorActionPerformed
+
+    private void btnComenzarPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarPartidaActionPerformed
+        // TODO add your handling code here:
+        setPaneles("Jugar");
+    }//GEN-LAST:event_btnComenzarPartidaActionPerformed
+
+    private void menuEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEstadisticasActionPerformed
+        // TODO add your handling code here:
+        
+        setPaneles("Estadisticas");
+    }//GEN-LAST:event_menuEstadisticasActionPerformed
+
+    private void btnDoneEstadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneEstadisticasActionPerformed
+        // TODO add your handling code here:
+        setPaneles("Inicio");
+    }//GEN-LAST:event_btnDoneEstadisticasActionPerformed
+
+    private void cboTamanioTableroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTamanioTableroActionPerformed
+        // TODO add your handling code here:
+        
+        int tamTablero = (int)this.cboTamanioTablero.getSelectedItem();
+        int tamPanel;
+        switch(tamTablero){
+            case 4:
+                tamPanel = 2;
+                this.cboTamanioPanel.addItem(tamPanel);
+                break;
+            
+        }
+        
+    }//GEN-LAST:event_cboTamanioTableroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,32 +448,95 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbandonar;
+    private javax.swing.JButton btnAgregarJugador;
     private javax.swing.JToggleButton btnAgregarPanel;
-    private javax.swing.JToggleButton jToggleButton2;
-    private java.awt.Label label1;
-    private java.awt.Label label2;
-    private java.awt.Label label3;
-    private java.awt.Panel panel1;
+    private javax.swing.JButton btnCancelAgregarJugador;
+    private javax.swing.JButton btnComenzarPartida;
+    private javax.swing.JButton btnDoneEstadisticas;
+    private javax.swing.JButton btnJugar;
+    private javax.swing.JToggleButton btnMoverPanel;
+    private javax.swing.JComboBox cboCantidadFichas;
+    private javax.swing.JComboBox cboJugadorBlancas;
+    private javax.swing.JComboBox cboJugadorNegras;
+    private javax.swing.JComboBox cboTamanioPanel;
+    private javax.swing.JComboBox cboTamanioTablero;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenuBar menu;
+    private javax.swing.JMenuItem menuAgregarJugador;
+    private javax.swing.JMenuItem menuEstadisticas;
+    private javax.swing.JMenu menuSettings;
+    private javax.swing.JPanel panelEstadisticas;
+    private javax.swing.JPanel panelInicio;
     private javax.swing.JPanel panelJuego;
+    private javax.swing.JPanel panelJugadores;
+    private javax.swing.JPanel panelMenuInicioJuego;
+    private javax.swing.JPanel panelMenuJuego;
+    private javax.swing.JTextField txtAlias;
+    private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-    private class ListenerBoton implements ActionListener {
+    private void setPaneles(String panelName){
 
-        private int x;
-        private int y;
+        switch(panelName){
+            case "Inicio":
+                this.panelInicio.setVisible(true);
+                this.panelJugadores.setVisible(false);
+                this.panelMenuJuego.setVisible(false); 
+                this.panelMenuInicioJuego.setVisible(false);
+                this.panelEstadisticas.setVisible(false);
+                break;
+                
+            case "Jugar":
+                this.panelInicio.setVisible(false);
+                this.panelJugadores.setVisible(false);
+                this.panelMenuJuego.setVisible(true);                
+                this.panelMenuInicioJuego.setVisible(false);
+                this.panelEstadisticas.setVisible(false);
+                break;            
 
-        public ListenerBoton(int i, int j) {
-            //en el constructor se almacena la fila y la columan q presionó
-            x = i;
-            y = j;
-        }
+            case "InicioJuego":
+                this.panelInicio.setVisible(false);
+                this.panelJugadores.setVisible(false);
+                this.panelMenuJuego.setVisible(false);                
+                this.panelMenuInicioJuego.setVisible(true);
+                break;
+                
+            case "Jugadores":
+                this.panelInicio.setVisible(false);
+                this.panelJugadores.setVisible(true);
+                this.panelMenuJuego.setVisible(false);                
+                this.panelMenuInicioJuego.setVisible(false);
+                this.panelEstadisticas.setVisible(false);
+                break;            
 
-        public void actionPerformed(ActionEvent e) {
-            //cuando se presiona un botón, se ejecutará un método
-            clickBoton(x, y);
+            case "Estadisticas":
+                this.panelInicio.setVisible(false);
+                this.panelJugadores.setVisible(false);
+                this.panelMenuJuego.setVisible(false); 
+                this.panelMenuInicioJuego.setVisible(false);
+                this.panelEstadisticas.setVisible(true);
+                break;
+                
+            default:
+                this.panelInicio.setVisible(true);
+                this.panelJugadores.setVisible(false);
+                this.panelMenuJuego.setVisible(false); 
+                this.panelMenuInicioJuego.setVisible(false);
+                this.panelEstadisticas.setVisible(false);
+                break;                
         }
     }
-
+    
+    
     private void clickBoton(int fila, int columna) {
     //METODO A COMPLETAR:
         //en fila y columna se reciben las coordenas donde presionó el ususario, relativas al comienzo de la grilla
@@ -179,4 +560,44 @@ public class Ventana extends javax.swing.JFrame {
         }
     }
 
+    private void CrearTablero(int dimension){
+        //crear botones y agregarlos al panel
+        //panelJuego.setLayout(new GridLayout(dimension, dimension));
+        panelJuego.setLayout(new GridLayout(dimension, dimension));
+        botones = new JButton[dimension + 2][dimension + 2];
+        for (int i = 1; i <= dimension; i++) {
+            for (int j = 1; j <= dimension; j++) {
+                JButton jButton = new JButton();
+                jButton.addActionListener(new ListenerBoton(i, j));
+                panelJuego.add(jButton);
+                botones[i][j] = jButton;
+            }
+
+        }
+        botones[1][1].setSize((botones[1][1].getWidth())*2,botones[1][1].getHeight());
+        botones[1][1].setVisible(false);
+        for (int i = 2; i <= dimension; i++) {
+           botones[1][i].setText(""+(i-1));
+           botones[i][1].setText(((char)num)+"");
+           botones[i][1].setSize((botones[i][1].getWidth())*2,botones[i][1].getHeight());
+           num=num+1;
+        }        
+    }
+
+    private class ListenerBoton implements ActionListener {
+
+        private int x;
+        private int y;
+
+        public ListenerBoton(int i, int j) {
+            //en el constructor se almacena la fila y la columan q presionó
+            x = i;
+            y = j;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            //cuando se presiona un botón, se ejecutará un método
+            clickBoton(x, y);
+        }
+    }
 }
