@@ -336,6 +336,7 @@ public class Ventana extends javax.swing.JFrame {
         
         //Cargamos los combos del menu de incio de la partida
         this.cboTamanioTablero.removeAllItems();
+        this.cboTamanioTablero.insertItemAt("",0);
         int num = 4;
         this.cboTamanioTablero.addItem(num);
         num = 6;
@@ -400,14 +401,34 @@ public class Ventana extends javax.swing.JFrame {
     private void cboTamanioTableroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTamanioTableroActionPerformed
         // TODO add your handling code here:
         
-        int tamTablero = (int)this.cboTamanioTablero.getSelectedItem();
-        int tamPanel;
-        switch(tamTablero){
-            case 4:
-                tamPanel = 2;
-                this.cboTamanioPanel.addItem(tamPanel);
-                break;
+        if(this.cboTamanioTablero.getSelectedItem() != null && this.cboTamanioTablero.getSelectedIndex() > 0){
             
+            int tamTablero = (int)this.cboTamanioTablero.getSelectedItem();
+            int tamPanel;
+            this.cboTamanioPanel.removeAllItems();
+            switch(tamTablero){
+                case 4:
+                    tamPanel = 2;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    break;
+
+                case 6:
+                    tamPanel = 2;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    tamPanel = 3;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    break; 
+
+                case 8:
+                    tamPanel = 2;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    tamPanel = 3;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    tamPanel = 4;
+                    this.cboTamanioPanel.addItem(tamPanel);
+                    break;             
+            }  
+            this.cboTamanioPanel.setEnabled(true);
         }
         
     }//GEN-LAST:event_cboTamanioTableroActionPerformed
